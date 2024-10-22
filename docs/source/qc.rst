@@ -30,6 +30,32 @@ Finally, start the docker container in the following way:
    
    To build the container, download the Dockerfile and run "docker build -t microbiomeinformatics/mgnify-ebi-2020-qc-asssembly ." in the folder that contains the Dockerfile.
 
+When not using the docker youll need to install the used programs:
+
+.. code-block:: bash
+
+    sudo apt install fastqc
+
+    sudo apt install multiqc
+    sudo apt install python3-venv
+
+
+    wget http://www.usadellab.org/cms/uploads/supplementary/Trimmomatic/Trimmomatic-0.39.zip
+    unzip Trimmomatic-0.39.zip
+    sudo mv Trimmomatic-0.39/trimmomatic-0.39.jar /usr/local/bin/trimmomatic.jar
+    sudo apt install bowtie2
+    
+
+For multiqc it is possible you need to use older numpy builds, so a venv is recommended:
+
+.. code-block:: bash
+
+    python3 -m venv multiqc-env
+    source multiqc-env/bin/activate
+    pip install setuptools multiqc
+    pip install numpy==1.24 multiqc
+    pip install disutils multiqc
+
 
 Quality control and filtering of the raw sequence files
 -----------------------------------------------------------------
@@ -204,7 +230,7 @@ We now need to uncompress the fastq files. 
     gunzip -c oral_human_example_2_splitaa.fastq.gz > oral_human_example_2_splitaa.fastq
     gunzip -c oral_human_example_1_splitaa.fastq.gz > oral_human_example_1_splitaa.fastq
     
-    kneaddata --remove-intermediate-output -t 2 --input1 oral_human_example_1_splitaa.fastq --input2 oral_human_example_2_splitaa.fastq --output ./clean --reference-db ./decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic Trimmomatic-0.39/ --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50"
+    kneaddata --remove-intermediate-output -t 2 --input1 oral_human_example_1_splitaa.fastq --input2 oral_human_example_2_splitaa.fastq --output ./clean --reference-db ./decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic /usr/local/bin/ --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50" --trf /usr/local/bin/
 
 
 |image1|\ The options above are:
