@@ -229,8 +229,56 @@ We now need to uncompress the fastq files. 
 
     gunzip -c oral_human_example_2_splitaa.fastq.gz > oral_human_example_2_splitaa.fastq
     gunzip -c oral_human_example_1_splitaa.fastq.gz > oral_human_example_1_splitaa.fastq
-    
     kneaddata --remove-intermediate-output -t 2 --input1 oral_human_example_1_splitaa.fastq --input2 oral_human_example_2_splitaa.fastq --output ./clean --reference-db ./decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic /usr/local/bin/ --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50" --trf /usr/local/bin/
+
+
+It is possible that your kneaddata version does not recognizes the reads as pairs if they have an space in their identifiers, if thats the case you can adapt this code to solve the issue (just check that the "regex" is compatible with the naming of your data)
+
+.. code-block:: bash
+    #!/bin/bash
+    
+    # Check if the directory is provided
+    if [ "$#" -ne 1 ]; then
+        echo "Usage: $0 <directory>"
+        exit 1
+    fi
+    
+    directory=$1
+    
+    # Function to modify headers in a FASTQ file
+    modify_headers() {
+        input_file=$1
+        output_file=$2
+    
+        awk '{
+            if (NR % 4 == 1 && substr($0, 1, 1) == "@") {
+                split($0, arr, " ")
+                print arr[1] "/" substr(arr[2], 1, 1)
+            } else {
+                print
+            }
+        }' "$input_file" > "$output_file"
+    }
+    
+    # Process all *_1_*.fastq files
+    for file in "$directory"/*_R1_*.fastq; do
+        if [[ -f "$file" ]]; then
+            output_file="${file%.fastq}_modified.fastq"
+            echo "Modifying headers in $file..."
+            modify_headers "$file" "$output_file"
+            echo "Output written to $output_file"
+        fi
+    done
+    
+    # Process all *_2_*.fastq files
+    for file in "$directory"/*_R2_*.fastq; do
+        if [[ -f "$file" ]]; then
+            output_file="${file%.fastq}_modified.fastq"
+            echo "Modifying headers in $file..."
+            modify_headers "$file" "$output_file"
+            echo "Output written to $output_file"
+        fi
+    done
 
 
 |image1|\ The options above are:
