@@ -204,7 +204,8 @@ We now need to uncompress the fastq files. 
     gunzip -c oral_human_example_2_splitaa.fastq.gz > oral_human_example_2_splitaa.fastq
     gunzip -c oral_human_example_1_splitaa.fastq.gz > oral_human_example_1_splitaa.fastq
     
-    kneaddata --remove-intermediate-output -t 2 --input oral_human_example_1_splitaa.fastq --input oral_human_example_2_splitaa.fastq --output /opt/data/clean --reference-db /opt/data/decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50"
+    kneaddata --remove-intermediate-output -t 2 --input1 oral_human_example_1_splitaa.fastq --input2 oral_human_example_2_splitaa.fastq --output ./clean --reference-db ./decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic Trimmomatic-0.39/ --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50"
+
 
 |image1|\ The options above are:
 
