@@ -229,7 +229,8 @@ We now need to uncompress the fastq files. 
 
     gunzip -c oral_human_example_2_splitaa.fastq.gz > oral_human_example_2_splitaa.fastq
     gunzip -c oral_human_example_1_splitaa.fastq.gz > oral_human_example_1_splitaa.fastq
-    kneaddata --remove-intermediate-output -t 2 --input1 oral_human_example_1_splitaa.fastq --input2 oral_human_example_2_splitaa.fastq --output ./clean --reference-db ./decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic /usr/local/bin/ --trimmomatic-options "SLIDINGWINDOW:4:20 MINLEN:50" --trf /usr/local/bin/
+    kneaddata --remove-intermediate-output -t 2 --input1 skin_example_aa_1.fastq --input2 skin_example_aa_2.fastq --output ./clean --reference-db ../decontamination/GRCh38_phix.index --bowtie2-options "--very-sensitive --dovetail" --trimmomatic /usr/local/bin/ --trimmomatic-options "ILLUMINACLIP:NexteraPE-PE.fa:2:30:10 SLIDINGWINDOW:4:20 MINLEN:50" --trf /usr/local/bin/
+
 
 
 It is possible that your kneaddata version does not recognizes the reads as pairs if they have an space in their identifiers, if thats the case you can adapt this code to solve the issue (just check that the "regex" is compatible with the naming of your data)
