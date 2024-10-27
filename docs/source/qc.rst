@@ -321,7 +321,8 @@ files.  Do this within the clean directory.
 
     cd /opt/data/clean
     mkdir fastqc_final
-    <you construct the commands>
+    fastqc oral_human_example_1_splitaa_modified_kneaddata_paired_1.fastq 
+    fastqc oral_human_example_1_splitaa_modified_kneaddata_paired_2.fastq 
     mv /opt/data/clean/*.zip /opt/data/clean/fastqc_final
     mv /opt/data/clean/*.html /opt/data/clean/fastqc_final
 
@@ -330,9 +331,12 @@ quality historgrams. 
 
 .. code-block:: bash
 
-    cd /opt/data/clean
+    cd ./clean
     mkdir multiqc_final
-    <you construct the command>
+    cd ..
+    source multiqc-env/bin/activate
+    multiqc ./clean/fastqc_final -o ./clean/multiqc_final
+
 
 |image2|\  View the multiQC report as before using your browser. You
 should see something like this:
