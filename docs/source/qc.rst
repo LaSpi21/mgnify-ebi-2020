@@ -234,6 +234,7 @@ We now need to uncompress the fastq files. 
 
 
 It is possible that your kneaddata version does not recognizes the reads as pairs if they have an space in their identifiers, if thats the case you can adapt this code to solve the issue (just check that the "regex" is compatible with the naming of your data)
+Also, check http://www.usadellab.org/cms/?page=trimmomatic for useful trimmomatic options.
 
 .. code-block:: bash
     #!/bin/bash
